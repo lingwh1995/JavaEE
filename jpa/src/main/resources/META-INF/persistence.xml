@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.0"
+             xmlns="http://java.sun.com/xml/ns/persistence"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://java.sun.com/xml/ns/persistence
+            http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd">
+
+    <!--
+        name:持久化单元名称
+        transaction-type:JTA分布式/RESOURCE_LOCAL本地事物管理
+    -->
+    <persistence-unit name="user" transaction-type="RESOURCE_LOCAL">
+        <!--配置jpa的实现方式-->
+        <provider>
+            org.hibernate.jpa.HibernatePersistenceProvider
+        </provider>
+        <!--jpahelloworld实体-->
+        <class>com.dragonsoft.jpahellowrold.domain.User</class>
+        <!--jpacrud实体-->
+        <class>com.dragonsoft.jpacrud.domain.User</class>
+        <!--jpql-->
+        <class>com.dragonsoft.queryinterface.domain.User</class>
+        <!--数据库信息-->
+        <properties>
+            <property name="javax.persistence.jdbc.driver" value="oracle.jdbc.OracleDriver"/>
+            <property name="javax.persistence.jdbc.url" value="jdbc:oracle:thin:@192.168.0.130:1521:orcl"/>
+            <property name="javax.persistence.jdbc.user" value="scott"/>
+            <property name="javax.persistence.jdbc.password" value="tiger"/>
+
+            <!--配置jpa实现方厂商-->
+            <!--配置方言-->
+            <property name="hibernate.dialect" value="org.hibernate.dialect.Oracle10gDialect"/>
+            <!-- 显示SQL语句，在控制台显示 -->
+            <property name="hibernate.show_sql" value="true"/>
+            <!-- 格式化SQL语句 -->
+            <property name="hibernate.format_sql" value="true" />
+            <!-- 生成数据库的表结构
+                update：如果没有表结构，创建表结构。如果存在，不会创建，添加数据
+                create：每次都会创建一个新的表.(测试的时候)
+                create-drop：每次都会创建一个新的表,当执行结束之后,将创建的这个表删除.(测试的时候)
+                update：如果有表,使用原来的表.没有表,创建一个新的表.同时更新表结构.
+                validate：	如果有表,使用原来的表.同时校验映射文件与表中字段是否一致如果不一致就会报错.
+            -->
+            <property name="hibernate.hbm2ddl.auto" value="update"/>
+        </properties>
+    </persistence-unit>
+</persistence>

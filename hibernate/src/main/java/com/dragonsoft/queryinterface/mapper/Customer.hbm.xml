@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<!-- 配置类和表结构的映射 -->
+	<class name="com.dragonsoft.queryinterface.domain.Customer" table="T_CUSTOMER">
+		<!--	配置id
+			用来将类中的属性与表中的主键建立映射，id标签就是用来配置主键的
+			* name		类中属性名
+			* column 	表中的字段名.(如果类中的属性名与表中的字段名一致,那么column可以省略.)
+			* length	字段的程度，如果数据库已经创建好了，那么length可以不写。如果没有创建好，生成表结构时，length最好指定。
+		-->
+		<id name="id" column="id">
+			<!-- 主键的生成策略
+			 	 assigned:主键由外部程序负责生成，在 save() 之前必须指定一个。Hibernate不负责维护主键生成。与Hibernate和底层数
+			 	 		  据库都无关，可以跨数据库。在存储对象前，必须要使用主键的setter方法给主键赋值，至于这个值怎么生成，完全
+			 	 		  由自己决定，这种方法应该尽量避免。
+				 increment:由Hibernate从数据库中取出主键的最大值（每个session只取1次），以该值为基础，每次增量为1，在内存中生成
+				 		   主键，不依赖于底层的数据库，因此可以跨数据库
+				 native:native由hibernate根据使用的数据库自行判断采用identity、hilo、sequence其中一种作为主键生成方式，灵活性
+				 		很强。如果能支持identity则使用identity，如果支持sequence则使用sequence。
+				 guid:Globally Unique Identifier全球唯一标识符，也称作 UUID，是一个128位长的数字，用16进制表示。算法的核心思
+				 	  想是结合机器的网卡、当地时间、一个随即数来生成GUID。从理论上讲，如果一台机器每秒产生10000000个GUID，则可
+				 	  以保证（概率意义上）3240年不重复。
+			-->
+			<generator class="uuid"/>
+		</id>
+
+		<!--	配置其他的属性
+			* name			类中属性名
+			* column		表中的字段名.(如果类中的属性名与表中的字段名一致,那么column可以省略.)
+			* length		数据长度
+				注意:当数表已经创建好了,配置length已经没有意义了
+			* type			数据类型（一般都不需要编写，如果写需要按着规则来编写）
+			* Hibernate的数据类型	type="string"
+			* Java的数据类型		type="java.lang.String"
+			* 数据库字段的数据类型	<column name="name" sql-type="varchar"/>
+		-->
+		<property name="name" column="name"/>
+		<property name="age" column="age"/>
+		<!-- 配置一方 -->
+		<!-- set标签
+			name：表示集合的名称
+			table:子表表名(可以不写)
+			inverse:是否放弃维护外键
+				一般是一方放弃维护主键,由多方维护主键
+			cascade:级联操作，如果配置了inverse=true，级联保存方向要选择:只保存多方
+		-->
+		<set name="orders" table="T_ORDER"
+			 cascade="delete"
+			 inverse="true">
+			<!-- 外键的字段 -->
+			<key column="CUSTOMER_ID"></key>
+			<one-to-many class="com.dragonsoft.queryinterface.domain.Order" />
+		</set>
+	</class>
+</hibernate-mapping>

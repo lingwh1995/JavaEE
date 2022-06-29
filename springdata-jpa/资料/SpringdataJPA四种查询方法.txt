@@ -1,0 +1,4 @@
+1.使用JPARepository的提供的方法进行查询，生成SimpleJpaRepository这个接口进行查询
+2.使用JPQL进行查询
+3.使用原生SQL进行查询
+4.使用约定的方法名称进行查询,这种查询方法不需要再Dao层接口上加@Query(value="xxx")
